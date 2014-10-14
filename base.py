@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 import os,logging
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
-from google.appengine.dist import use_library
-use_library('django', '1.2')
+#os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 import functools
 from google.appengine.api import users
 from google.appengine.ext import webapp
@@ -23,6 +21,7 @@ import micolog_template
 
 
 logging.info('module base reloaded')
+
 def urldecode(value):
     return  urllib.unquote(urllib.unquote(value)).decode('utf8')
     #return  urllib.unquote(value).decode('utf8')
@@ -104,7 +103,7 @@ def cache(key="",time=3600):
                 if ilen>=4:
                     for skey,value in html[3].items():
                         response.headers[skey]=value
-                response.out.write(html[0])
+                response.out.write(unicode(html[0]))
             else:
                 if 'last-modified' not in response.headers:
                     response.last_modified = format_date(datetime.utcnow())
@@ -224,15 +223,15 @@ class Pager(object):
 
 
 class BaseRequestHandler(webapp.RequestHandler):
-    def __init__(self):
-        self.current='home'
-
-##	def head(self, *args):
-##		return self.get(*args)
+    def __init__(self, request = None, response = None, c='home'):
+        self.current = c
+        webapp.RequestHandler.__init__(self, request, response)
 
     def initialize(self, request, response):
         webapp.RequestHandler.initialize(self, request, response)
+
         os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+
         from model import g_blog,User
         self.blog = g_blog
         self.login_user = users.get_current_user()
@@ -300,7 +299,7 @@ class BaseRequestHandler(webapp.RequestHandler):
                 content=micolog_template.render(self.blog.default_theme,"error.html", self.template_vals)
         except:
             content=message
-        self.response.out.write(content)
+        self.response.out.write(unicode(content))
 
     def get_render(self,template_file,values):
         template_file=template_file+".html"
@@ -321,7 +320,7 @@ class BaseRequestHandler(webapp.RequestHandler):
         Helper method to render the appropriate template
         """
         html=self.get_render(template_file,values)
-        self.response.out.write(html)
+        self.response.out.write(unicode(html))
 
     def message(self,msg,returl=None,title='Infomation'):
         self.render('msg',{'message':msg,'title':title,'returl':returl})
@@ -332,7 +331,7 @@ class BaseRequestHandler(webapp.RequestHandler):
         """
         self.template_vals.update(template_vals)
         path = os.path.join(os.path.dirname(__file__), template_file)
-        self.response.out.write(template.render(path, self.template_vals))
+        self.response.out.write(unicode(template.render(path, self.template_vals)))
 
     def param(self, name, **kw):
         return self.request.get(name, **kw)
@@ -350,7 +349,7 @@ class BaseRequestHandler(webapp.RequestHandler):
            return default
 
     def write(self, s):
-        self.response.out.write(s)
+        self.response.out.write(unicode(s))
 
     def chk_login(self, redirect_url='/'):
         if self.is_login:

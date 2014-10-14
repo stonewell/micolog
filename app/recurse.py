@@ -1,7 +1,5 @@
 import os
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
-from google.appengine.dist import use_library
-use_library('django', '1.2')
 from django.template import Library
 from django.template import Node, NodeList
 from django.template import TemplateSyntaxError, VariableDoesNotExist
@@ -15,11 +13,12 @@ class RecurseNode( Node ):
         self.nodelist_first, self.nodelist_second = kwargs['nodelist_first'], kwargs['nodelist_second']
         del kwargs['nodelist_first'], kwargs['nodelist_second'], kwargs['sequence'], kwargs['children_name'], kwargs['loopvar']
         self.kwargs = kwargs
+        self.is_reversed = False
         
     def __repr__(self):
         reversed_text = self.is_reversed and ' reversed' or ''
         return "<For Node: for %s in %s, tail_len: %d%s>" % \
-            (', '.join(self.loopvars), self.sequence, len(self.nodelist_loop),
+            (', '.join(self.loopvar), self.sequence, len(self.nodelist_first) + len(self.nodelist_second),
              reversed_text)
 
     def __iter__(self):

@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
-from google.appengine.dist import use_library
-use_library('django', '1.2')
 from django import template
 from model import *
 import django.template.defaultfilters as defaultfilters
@@ -10,7 +8,7 @@ import urllib
 register = template.Library()
 from datetime import *
 
-@register.filter
+@register.filter('datetz')
 def datetz(date,format):  #datetime with timedelta
 	t=timedelta(seconds=3600*g_blog.timedelta)
 	return defaultfilters.date(date+t,format)
@@ -84,11 +82,14 @@ def do_filter(data):
 '''
 tag like {%mf header%}xxx xxx{%endmf%}
 '''
-@register.tag("mf")
+@register.tag(name="mf")
 def do_mf(parser, token):
 	nodelist = parser.parse(('endmf',))
 	parser.delete_first_token()
 	return MfNode(nodelist,token)
+
+register.tag("mf", do_mf)
+logging.info('template registered!!!!!!!!!!!!!!!!!!!!!!!!!')
 
 class MfNode(template.Node):
 	def __init__(self, nodelist,token):
