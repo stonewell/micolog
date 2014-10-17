@@ -2,6 +2,7 @@
 import os
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 import wsgiref.handlers
+import django
 from django.conf import settings
 settings._target = None
 from django.utils import simplejson

@@ -89,7 +89,6 @@ def do_mf(parser, token):
 	return MfNode(nodelist,token)
 
 register.tag("mf", do_mf)
-logging.info('template registered!!!!!!!!!!!!!!!!!!!!!!!!!')
 
 class MfNode(template.Node):
 	def __init__(self, nodelist,token):

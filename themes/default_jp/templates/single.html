@@ -5,6 +5,7 @@
 <div class="ctop"></div>
 <div class="box">
 
+{% for i in 1|make_list %}
 {% if entry %}
 
 <div id="post-{{entry.key}}">
@@ -46,6 +47,7 @@
 <div class="space"></div>
 
 {%endif%}
+{%endfor%}
 </div>
 {% include "sidebar.html" %}
 {% endblock %}

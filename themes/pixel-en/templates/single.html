@@ -5,6 +5,7 @@
 <div id="main">
 
 <div id="contentwrapper">
+{% for i in 1|make_list %}
 {% if entry %}
 
 <div class="topPost">
@@ -27,6 +28,7 @@
 </div> <!-- Closes Comment -->
 
 {%endif%}
+{%endfor%}
 </div><!-- Closes contentwrapper-->
 {% include "sidebar.html" %}
 <div class="cleared"></div>

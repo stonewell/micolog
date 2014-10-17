@@ -10,9 +10,11 @@
 <div id="post-{{entry.key}}">
 <div class="nifty"><h2><a href="/{{ entry.link|safe }}" rel="bookmark" title="Permanent Link to {{entry.title}}">{{entry.title}}</a> <span class="date">{{entry.date|datetz:"F jS, Y"}}</span></h2></div>
 <div class="en_body">
+			{% for l in 1|make_list %}
 {%mf entry_content %}
 {{ entry.content|safe }}
 {%endmf%}
+
 {%mf after_entry_content%}
 	{%if relateposts%}
                 <h4>Relate Posts:</h4>
@@ -32,6 +34,7 @@ Trackback:<a href='{{entry.trackbackurl|safe}}'>{{entry.trackbackurl}}</a>
 {%endif%}
 </div>
 {%endmf%}
+{%endfor%}
 </div>
 </div>
 <div class="cbottom"></div>

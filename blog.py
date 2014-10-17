@@ -82,7 +82,7 @@ class MainPage(BasePublicPage):
         if postid:
             try:
                 postid=int(postid)
-                return doRequestHandle(self,SinglePost(),postid=postid)  #singlepost.get(postid=postid)
+                return doRequestHandle(self,SinglePost(),postid=postid)
             except:
                 return self.error(404)
         if g_blog.allow_pingback :

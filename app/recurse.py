@@ -1,4 +1,4 @@
-import os
+import os, logging
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 from django.template import Library
 from django.template import Node, NodeList
@@ -15,11 +15,8 @@ class RecurseNode( Node ):
         self.kwargs = kwargs
         self.is_reversed = False
         
-    def __repr__(self):
-        reversed_text = self.is_reversed and ' reversed' or ''
-        return "<For Node: for %s in %s, tail_len: %d%s>" % \
-            (', '.join(self.loopvar), self.sequence, len(self.nodelist_first) + len(self.nodelist_second),
-             reversed_text)
+    def __unicode__(self):
+        return 'string to put in template'
 
     def __iter__(self):
       for node in self.nodelist_first:
@@ -91,7 +88,7 @@ class RecurseNode( Node ):
         context.pop()
         return nodelist.render(context)
 
-#@register.tag(name="for")
+@register.tag(name='recurse')
 def do_recurse(parser, token):
     """
     Recursively loops over each item in an array . 
@@ -208,4 +205,3 @@ def do_recurse(parser, token):
     node_vars['nodelist_first'] = nodelist_first
     node_vars['nodelist_second'] = nodelist_second
     return RecurseNode(**node_vars)
-do_recurse = register.tag("recurse", do_recurse)

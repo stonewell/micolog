@@ -108,6 +108,7 @@ $('#more').click(
 
 <!-- Footer Starts -->
 <div id="footer">
+{% for l in 1|make_list %}
 {%mf admin_footer%}
     <div class="fontmlog">
         {%if not blog.admin_essential%}
@@ -124,6 +125,7 @@ $('#more').click(
 
     </div>
 {%endmf%}
+{% endfor %}
 </div>
 <!-- Footer Ends -->
 

@@ -236,8 +236,10 @@ class BaseRequestHandler(webapp.RequestHandler):
         self.blog = g_blog
         self.login_user = users.get_current_user()
         self.is_login = (self.login_user != None)
-        self.loginurl=users.create_login_url(self.request.uri)
-        self.logouturl=users.create_logout_url(self.request.uri)
+
+        if self.request:
+            self.loginurl=users.create_login_url(self.request.uri)
+            self.logouturl=users.create_logout_url(self.request.uri)
         self.is_admin = users.is_current_user_admin()
 
         if self.is_admin:
