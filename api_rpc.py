@@ -21,6 +21,7 @@ def checkauth(pos=1):
 
             username = args[pos+0]
             password = args[pos+1]
+            logging.info('username %s,password %s' % (username, password))
 
             if not (username and password and g_blog.rpcuser and g_blog.rpcpassword
                     and (g_blog.rpcuser==username)
@@ -955,7 +956,7 @@ class CallApi(BaseRequestHandler):
         request = self.request.body
         response = dispatcher._marshaled_dispatch(request)
         Logger(request = unicode(request, 'utf-8'), response = unicode(response, 'utf-8')).put()
-        self.write(response)
+        self.write(unicode(response, 'utf-8'))
 
 class View(BaseRequestHandler):
     @requires_admin
